@@ -42,10 +42,13 @@ class BsonDataSourceEndToEndTest {
     }
 
     private static String testResource(String relativePath) {
-        return BsonDataSourceEndToEndTest.class
+        java.net.URL resource = BsonDataSourceEndToEndTest.class
                 .getClassLoader()
-                .getResource("ejson/" + relativePath)
-                .getPath();
+                .getResource("ejson/" + relativePath);
+        if (resource == null) {
+            throw new IllegalStateException("Test resource not found: ejson/" + relativePath);
+        }
+        return resource.getPath();
     }
 
     // ─── All BSON Types ───────────────────────────────────────────────
@@ -255,7 +258,6 @@ class BsonDataSourceEndToEndTest {
         }
 
         @Test
-        @SuppressWarnings("unchecked")
         void readsMapFields() {
             List<Row> rows = loadAllTypes().select("map_field").collectAsList();
 
@@ -425,7 +427,6 @@ class BsonDataSourceEndToEndTest {
         }
 
         @Test
-        @SuppressWarnings("unchecked")
         void readsAccessMapField() {
             List<Row> rows = loadFederationData().select("_access").collectAsList();
 

@@ -10,7 +10,7 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap;
 /**
  * Configuration options for the BSON DataSource reader.
  *
- * <p>Values are eagerly resolved at construction time so this object
+ * <p>Values are eagerly resolved at construction time, so this object
  * is safely serializable to Spark executors.
  */
 public final class BsonReadOptions implements Serializable {

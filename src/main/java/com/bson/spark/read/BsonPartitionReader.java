@@ -32,10 +32,8 @@ import com.bson.spark.schema.BsonToRowConverter;
 public final class BsonPartitionReader implements PartitionReader<InternalRow> {
 
     private final BsonToRowConverter converter;
-    private final String filePath;
-
-    private InputStream bsonInputStream;
-    private BufferedReader jsonReader;
+    private final InputStream bsonInputStream;
+    private final BufferedReader jsonReader;
     private final boolean isBsonFormat;
 
     private InternalRow currentRow;
@@ -44,8 +42,9 @@ public final class BsonPartitionReader implements PartitionReader<InternalRow> {
     public BsonPartitionReader(
             BsonPartition partition, BsonToRowConverter converter, Configuration hadoopConf) {
         this.converter = converter;
-        this.filePath = partition.filePath();
         this.exhausted = false;
+
+        String filePath = partition.filePath();
         this.isBsonFormat = isBsonFile(filePath);
 
         InputStream rawStream = openFile(filePath, hadoopConf);
