@@ -183,8 +183,6 @@ The output JAR is in `build/libs/bson-spark_2.12-0.1.0.jar` (or `_2.13`).
 3. **Parsing** — EJSON lines are parsed with `BsonDocument.parse()` (the BSON Java driver natively understands Extended JSON v2 type wrappers). Binary BSON is decoded with `RawBsonDocument`.
 4. **Type conversion** — Each `BsonValue` is converted to the Spark internal representation based on the declared schema, producing `InternalRow` objects directly in the JVM.
 
-No Python, no intermediate files, no double-parsing.
-
 ## License
 
 Apache License 2.0
