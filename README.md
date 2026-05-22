@@ -39,17 +39,17 @@ schema = StructType([
     StructField("resourceType", StringType()),
     StructField("id", StringType()),
     StructField("status", StringType()),
-    StructField("_access", MapType(StringType(), IntegerType())),
-    StructField("_sourceAssigningAuthority", StringType()),
-    StructField("_uuid", StringType()),
-    StructField("_sourceId", StringType()),
+    StructField("tags", MapType(StringType(), IntegerType())),
+    StructField("identifier", StringType()),
+    StructField("uuid", StringType()),
+    StructField("sourceRef", StringType()),
 ])
 
 df = (
     spark.read
     .format("bson")
     .schema(schema)
-    .load("/Volumes/bronze/fhir_lake/atlas_data_federation/Account_4_0_0/2026-03-26T14-28-01/")
+    .load("/Volumes/catalog/schema/volume/path/to/ejson/files/")
 )
 
 df.show()
