@@ -40,10 +40,10 @@ extra.apply {
 sourceSets {
     main {
         java {
-            srcDirs(
+            setSrcDirs(listOf(
                 "src/main/java",
                 "src/main/java_scala_${scalaVersion.replace(".", "")}"
-            )
+            ))
         }
     }
 }
@@ -106,14 +106,9 @@ tasks.shadowJar {
     archiveBaseName.set("bson-spark_$scalaVersion")
 }
 
-tasks.register<Jar>("sourcesJar") {
-    from(sourceSets.main.get().allSource)
-    archiveClassifier.set("sources")
-}
-
-tasks.register<Jar>("javadocJar") {
-    from(tasks.javadoc)
-    archiveClassifier.set("javadoc")
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
@@ -121,8 +116,6 @@ publishing {
         create<MavenPublication>("mavenJava") {
             artifactId = "bson-spark_$scalaVersion"
             from(components["java"])
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["javadocJar"])
 
             pom {
                 name.set("bson-spark")
