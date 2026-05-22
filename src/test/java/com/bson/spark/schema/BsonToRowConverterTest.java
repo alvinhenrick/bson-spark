@@ -29,9 +29,9 @@ class BsonToRowConverterTest {
         return new BsonReadOptions(new CaseInsensitiveStringMap(Collections.emptyMap()));
     }
 
-    private static BsonReadOptions optionsWithCorruptColumn(String column) {
+    private static BsonReadOptions optionsWithCorruptColumn() {
         Map<String, String> opts = new HashMap<>();
-        opts.put("columnNameOfCorruptRecord", column);
+        opts.put("columnNameOfCorruptRecord", "_error");
         return new BsonReadOptions(new CaseInsensitiveStringMap(opts));
     }
 
@@ -509,7 +509,7 @@ class BsonToRowConverterTest {
                     new StructField("_error", DataTypes.StringType, true, Metadata.empty()),
             });
 
-            BsonToRowConverter converter = new BsonToRowConverter(schema, optionsWithCorruptColumn("_error"));
+            BsonToRowConverter converter = new BsonToRowConverter(schema, optionsWithCorruptColumn());
             InternalRow row = converter.convert(BsonDocument.parse(ejson));
 
             assertThat(row).isNotNull();
@@ -542,7 +542,7 @@ class BsonToRowConverterTest {
                     new StructField("_error", DataTypes.StringType, true, Metadata.empty()),
             });
 
-            BsonToRowConverter converter = new BsonToRowConverter(schema, optionsWithCorruptColumn("_error"));
+            BsonToRowConverter converter = new BsonToRowConverter(schema, optionsWithCorruptColumn());
             InternalRow row = converter.convert(BsonDocument.parse(ejson));
 
             assertThat(row).isNotNull();
