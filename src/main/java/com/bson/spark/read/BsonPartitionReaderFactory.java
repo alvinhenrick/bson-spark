@@ -2,11 +2,13 @@ package com.bson.spark.read;
 
 import java.io.Serializable;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.connector.read.InputPartition;
 import org.apache.spark.sql.connector.read.PartitionReader;
 import org.apache.spark.sql.connector.read.PartitionReaderFactory;
 import org.apache.spark.sql.types.StructType;
+import org.apache.spark.util.SerializableConfiguration;
 
 import com.bson.spark.options.BsonReadOptions;
 import com.bson.spark.schema.BsonToRowConverter;
@@ -20,16 +22,19 @@ public final class BsonPartitionReaderFactory implements PartitionReaderFactory,
 
     private final StructType schema;
     private final BsonReadOptions options;
+    private final SerializableConfiguration hadoopConf;
 
-    public BsonPartitionReaderFactory(StructType schema, BsonReadOptions options) {
+    public BsonPartitionReaderFactory(
+            StructType schema, BsonReadOptions options, Configuration hadoopConf) {
         this.schema = schema;
         this.options = options;
+        this.hadoopConf = new SerializableConfiguration(hadoopConf);
     }
 
     @Override
     public PartitionReader<InternalRow> createReader(InputPartition partition) {
         BsonPartition bsonPartition = (BsonPartition) partition;
         BsonToRowConverter converter = new BsonToRowConverter(schema, options);
-        return new BsonPartitionReader(bsonPartition, converter);
+        return new BsonPartitionReader(bsonPartition, converter, hadoopConf.value());
     }
 }

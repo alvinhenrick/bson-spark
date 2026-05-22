@@ -1,6 +1,8 @@
 package com.bson.spark.read;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.spark.sql.connector.catalog.SupportsRead;
@@ -48,7 +50,7 @@ public final class BsonTable implements Table, SupportsRead {
 
     private static CaseInsensitiveStringMap mergeOptions(
             CaseInsensitiveStringMap base, CaseInsensitiveStringMap override) {
-        java.util.Map<String, String> merged = new java.util.HashMap<>(base.asCaseSensitiveMap());
+        Map<String, String> merged = new HashMap<>(base.asCaseSensitiveMap());
         merged.putAll(override.asCaseSensitiveMap());
         return new CaseInsensitiveStringMap(merged);
     }

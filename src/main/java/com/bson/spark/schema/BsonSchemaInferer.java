@@ -8,15 +8,23 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.ArrayType;
 import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.DecimalType;
 import org.apache.spark.sql.types.DoubleType;
+import org.apache.spark.sql.types.FloatType;
+import org.apache.spark.sql.types.IntegerType;
+import org.apache.spark.sql.types.LongType;
+import org.apache.spark.sql.types.NullType;
+import org.apache.spark.sql.types.ShortType;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
@@ -98,11 +106,6 @@ public final class BsonSchemaInferer {
             case NULL:
             case UNDEFINED:
                 return DataTypes.NullType;
-            case REGULAR_EXPRESSION:
-            case JAVASCRIPT:
-            case SYMBOL:
-            case DB_POINTER:
-                return DataTypes.StringType;
             default:
                 return DataTypes.StringType;
         }
@@ -121,7 +124,7 @@ public final class BsonSchemaInferer {
 
     static StructType mergeSchemas(StructType left, StructType right) {
         Map<String, StructField> merged = new LinkedHashMap<>();
-        java.util.Set<String> rightFieldNames = new java.util.HashSet<>();
+        Set<String> rightFieldNames = new HashSet<>();
         for (StructField field : right.fields()) {
             rightFieldNames.add(field.name());
         }
@@ -154,10 +157,10 @@ public final class BsonSchemaInferer {
         if (left.equals(right)) {
             return left;
         }
-        if (left instanceof org.apache.spark.sql.types.NullType) {
+        if (left instanceof NullType) {
             return right;
         }
-        if (right instanceof org.apache.spark.sql.types.NullType) {
+        if (right instanceof NullType) {
             return left;
         }
         if (isNumeric(left) && isNumeric(right)) {
@@ -177,28 +180,28 @@ public final class BsonSchemaInferer {
     }
 
     private static boolean isNumeric(DataType type) {
-        return type instanceof org.apache.spark.sql.types.IntegerType
-                || type instanceof org.apache.spark.sql.types.LongType
+        return type instanceof IntegerType
+                || type instanceof LongType
                 || type instanceof DoubleType
-                || type instanceof org.apache.spark.sql.types.FloatType
-                || type instanceof org.apache.spark.sql.types.ShortType
-                || type instanceof org.apache.spark.sql.types.DecimalType;
+                || type instanceof FloatType
+                || type instanceof ShortType
+                || type instanceof DecimalType;
     }
 
     private static DataType widenNumeric(DataType left, DataType right) {
-        if (left instanceof org.apache.spark.sql.types.DecimalType
-                || right instanceof org.apache.spark.sql.types.DecimalType) {
+        if (left instanceof DecimalType
+                || right instanceof DecimalType) {
             return DataTypes.createDecimalType(34, 6);
         }
         if (left instanceof DoubleType || right instanceof DoubleType) {
             return DataTypes.DoubleType;
         }
-        if (left instanceof org.apache.spark.sql.types.FloatType
-                || right instanceof org.apache.spark.sql.types.FloatType) {
+        if (left instanceof FloatType
+                || right instanceof FloatType) {
             return DataTypes.DoubleType;
         }
-        if (left instanceof org.apache.spark.sql.types.LongType
-                || right instanceof org.apache.spark.sql.types.LongType) {
+        if (left instanceof LongType
+                || right instanceof LongType) {
             return DataTypes.LongType;
         }
         return DataTypes.IntegerType;

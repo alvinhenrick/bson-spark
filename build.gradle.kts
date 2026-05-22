@@ -29,7 +29,7 @@ val scalaVersion = project.findProperty("scalaVersion") as String? ?: "2.12"
 val sparkVersion = if (scalaVersion == "2.13") "4.0.2" else "3.5.8"
 
 extra.apply {
-    set("bsonVersion", "5.1.1")
+    set("bsonVersion", "5.5.1")
     set("sparkVersion", sparkVersion)
     set("scalaVersion", scalaVersion)
 

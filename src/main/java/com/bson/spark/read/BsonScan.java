@@ -32,12 +32,11 @@ import org.apache.hadoop.fs.Path;
 public final class BsonScan implements Scan, Batch {
 
     private final StructType schema;
-    private final CaseInsensitiveStringMap options;
+
     private final BsonReadOptions readOptions;
 
     public BsonScan(StructType schema, CaseInsensitiveStringMap options) {
         this.schema = schema;
-        this.options = options;
         this.readOptions = new BsonReadOptions(options);
     }
 
@@ -76,7 +75,8 @@ public final class BsonScan implements Scan, Batch {
 
     @Override
     public PartitionReaderFactory createReaderFactory() {
-        return new BsonPartitionReaderFactory(schema, readOptions);
+        Configuration hadoopConf = SparkSession.active().sparkContext().hadoopConfiguration();
+        return new BsonPartitionReaderFactory(schema, readOptions, hadoopConf);
     }
 
     private void collectFiles(
