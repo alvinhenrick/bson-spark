@@ -17,7 +17,7 @@ plugins {
 }
 
 version = "0.1.0-SNAPSHOT"
-group = "com.bson.spark"
+group = "io.github.alvinhenrick"
 
 description = "A Spark DataSource V2 for reading BSON files into DataFrames."
 
@@ -26,7 +26,7 @@ repositories {
 }
 
 val scalaVersion = project.findProperty("scalaVersion") as String? ?: "2.12"
-val sparkVersion = if (scalaVersion == "2.13") "4.0.1" else "3.5.4"
+val sparkVersion = if (scalaVersion == "2.13") "4.0.2" else "3.5.8"
 
 extra.apply {
     set("bsonVersion", "5.1.1")
@@ -126,17 +126,24 @@ publishing {
             pom {
                 name.set("bson-spark")
                 description.set(project.description)
-                url.set("https://github.com/icanbwell/bson-spark")
+                url.set("https://github.com/alvinhenrick/bson-spark")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
                         url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
+                developers {
+                    developer {
+                        id.set("alvinhenrick")
+                        name.set("Alvin Henrick")
+                        url.set("https://github.com/alvinhenrick")
+                    }
+                }
                 scm {
-                    connection.set("scm:https://github.com/icanbwell/bson-spark.git")
-                    developerConnection.set("scm:git@github.com:icanbwell/bson-spark.git")
-                    url.set("https://github.com/icanbwell/bson-spark")
+                    connection.set("scm:git:https://github.com/alvinhenrick/bson-spark.git")
+                    developerConnection.set("scm:git:ssh://github.com:alvinhenrick/bson-spark.git")
+                    url.set("https://github.com/alvinhenrick/bson-spark")
                 }
             }
         }

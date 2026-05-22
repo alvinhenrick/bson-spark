@@ -1,0 +1,38 @@
+name: Publish to Maven Central
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        scala: ["2.12", "2.13"]
+    name: Publish (Scala ${{ matrix.scala }})
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Set release version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i "s/version = \".*\"/version = \"$VERSION\"/" build.gradle.kts
+
+      - name: Build
+        run: ./gradlew build -PscalaVersion=${{ matrix.scala }}
+
+      - name: Publish
+        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -PscalaVersion=${{ matrix.scala }}
+        env:
+          ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSPHRASE }}

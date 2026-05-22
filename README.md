@@ -18,13 +18,13 @@ Reads line-delimited EJSON files (as exported by MongoDB Atlas Data Federation) 
 Upload the JAR as a cluster library, or add to cluster config:
 
 ```
-spark.jars.packages  com.bson.spark:bson-spark_2.12:0.1.0
+spark.jars.packages  io.github.alvinhenrick:bson-spark_2.12:0.1.0
 ```
 
 ### Local / Spark Submit
 
 ```bash
-spark-submit --packages com.bson.spark:bson-spark_2.12:0.1.0 your_app.py
+spark-submit --packages io.github.alvinhenrick:bson-spark_2.12:0.1.0 your_app.py
 ```
 
 ## Usage
