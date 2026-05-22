@@ -1,7 +1,6 @@
 package com.bson.spark.schema;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.catalyst.util.ArrayBasedMapData;
@@ -193,6 +192,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("507f1f77bcf86cd799439011"));
         }
 
@@ -206,6 +206,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getInt(0)).isEqualTo(42);
         }
 
@@ -219,6 +220,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getLong(0)).isEqualTo(9876543210L);
         }
 
@@ -232,6 +234,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getDouble(0)).isEqualTo(3.14);
         }
 
@@ -245,6 +248,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("123.456"));
         }
 
@@ -258,6 +262,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getDecimal(0, 10, 3).toBigDecimal().bigDecimal())
                     .isEqualByComparingTo("123.456");
         }
@@ -272,6 +277,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             // 1609459200000 ms = 1609459200000000 microseconds
             assertThat(row.getLong(0)).isEqualTo(1609459200000L * 1000L);
         }
@@ -286,6 +292,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             String dateStr = row.getUTF8String(0).toString();
             assertThat(dateStr).isEqualTo("2021-01-01T00:00:00Z");
         }
@@ -300,6 +307,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getBoolean(0)).isTrue();
         }
 
@@ -313,6 +321,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getBoolean(0)).isFalse();
         }
 
@@ -327,6 +336,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("aGVsbG8="));
         }
 
@@ -340,6 +350,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getBinary(0)).isEqualTo("hello".getBytes());
         }
 
@@ -353,6 +364,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("^abc"));
         }
 
@@ -372,6 +384,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getInt(0)).isEqualTo(expected);
         }
     }
@@ -392,6 +405,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.isNullAt(1)).isTrue();
         }
 
@@ -425,6 +439,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             ArrayData arr = row.getArray(0);
             assertThat(arr.numElements()).isEqualTo(3);
             assertThat(arr.getUTF8String(0)).isEqualTo(UTF8String.fromString("a"));
@@ -442,6 +457,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.isNullAt(0)).isFalse();
         }
 
@@ -455,6 +471,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             ArrayData arr = row.getArray(0);
             assertThat(arr.numElements()).isEqualTo(0);
         }
@@ -472,6 +489,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             InternalRow nested = row.getStruct(0, 1);
             assertThat(nested.isNullAt(0)).isTrue();
         }
@@ -548,6 +566,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getLong(0)).isEqualTo(42L);
         }
 
@@ -561,6 +580,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getDouble(0)).isEqualTo(42.0);
         }
 
@@ -574,6 +594,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getDouble(0)).isEqualTo(9876543210.0);
         }
 
@@ -587,6 +608,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("42"));
         }
 
@@ -600,6 +622,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("9876543210"));
         }
 
@@ -613,6 +636,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             String json = row.getUTF8String(0).toString();
             assertThat(json).contains("key");
             assertThat(json).contains("value");
@@ -634,6 +658,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             assertThat(row.isNullAt(0)).isFalse();
             ArrayBasedMapData map = (ArrayBasedMapData) row.getMap(0);
             assertThat(map.numElements()).isEqualTo(2);
@@ -649,6 +674,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             ArrayBasedMapData map = (ArrayBasedMapData) row.getMap(0);
             assertThat(map.numElements()).isEqualTo(0);
         }
@@ -675,6 +701,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             InternalRow a = row.getStruct(0, 1);
             InternalRow b = a.getStruct(0, 1);
             assertThat(b.getUTF8String(0)).isEqualTo(UTF8String.fromString("deep"));
@@ -693,6 +720,7 @@ class BsonToRowConverterTest {
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
                     .convert(BsonDocument.parse(ejson));
 
+            assertThat(row).isNotNull();
             ArrayData outer = row.getArray(0);
             assertThat(outer.numElements()).isEqualTo(2);
             ArrayData inner0 = outer.getArray(0);
