@@ -12,7 +12,7 @@ plugins {
     `maven-publish`
     signing
     id("com.gradleup.shadow") version "9.3.1"
-    id("com.diffplug.spotless") version "6.19.0"
+    id("com.diffplug.spotless") version "7.0.4"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
 
@@ -74,6 +74,7 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    dependsOn(tasks.named("spotlessApply"))
     testLogging {
         events("passed", "skipped", "failed")
     }
@@ -95,7 +96,7 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
         indentWithSpaces(4)
-        palantirJavaFormat().style("GOOGLE")
+        googleJavaFormat()
     }
 }
 

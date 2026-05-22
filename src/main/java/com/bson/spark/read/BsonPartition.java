@@ -1,34 +1,31 @@
 package com.bson.spark.read;
 
 import java.io.Serializable;
-
 import org.apache.spark.sql.connector.read.InputPartition;
 
-/**
- * Represents a single BSON file as an input partition.
- */
+/** Represents a single BSON file as an input partition. */
 public final class BsonPartition implements InputPartition, Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private final String filePath;
-    private final long fileSize;
+  private final String filePath;
+  private final long fileSize;
 
-    public BsonPartition(String filePath, long fileSize) {
-        this.filePath = filePath;
-        this.fileSize = fileSize;
-    }
+  public BsonPartition(String filePath, long fileSize) {
+    this.filePath = filePath;
+    this.fileSize = fileSize;
+  }
 
-    public String filePath() {
-        return filePath;
-    }
+  public String filePath() {
+    return filePath;
+  }
 
-    public long fileSize() {
-        return fileSize;
-    }
+  public long fileSize() {
+    return fileSize;
+  }
 
-    @Override
-    public String toString() {
-        return String.format("BsonPartition{path=%s, size=%d}", filePath, fileSize);
-    }
+  @Override
+  public String toString() {
+    return String.format("BsonPartition{path=%s, size=%d}", filePath, fileSize);
+  }
 }
