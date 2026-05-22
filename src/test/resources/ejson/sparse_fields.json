@@ -1,0 +1,4 @@
+{"_id":{"$oid":"aaa000000000000000000001"},"resourceType":"Patient","name":"Alice","age":{"$numberInt":"30"}}
+{"_id":{"$oid":"aaa000000000000000000002"},"resourceType":"Patient","name":"Bob"}
+{"_id":{"$oid":"aaa000000000000000000003"},"resourceType":"Observation","code":"blood-pressure","value":{"$numberDouble":"120.5"}}
+{"_id":{"$oid":"aaa000000000000000000004"},"resourceType":"Observation","code":"heart-rate","value":{"$numberDouble":"72.0"},"age":{"$numberInt":"45"}}

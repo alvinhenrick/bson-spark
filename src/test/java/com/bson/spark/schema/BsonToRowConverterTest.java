@@ -46,15 +46,15 @@ class BsonToRowConverterTest {
             String ejson = "{"
                     + "\"_id\":{\"$oid\":\"62b196c82283a3d22fddf32b\"},"
                     + "\"resourceType\":\"Account\","
-                    + "\"id\":\"bwell-J52EeTf\","
+                    + "\"id\":\"acct-J52EeTf\","
                     + "\"meta\":{\"versionId\":\"2\",\"lastUpdated\":{\"$date\":{\"$numberLong\":\"1721469638000\"}},"
-                    + "\"source\":\"https://www.icanbwell.com/platform\","
-                    + "\"security\":[{\"system\":\"https://www.icanbwell.com/access\",\"code\":\"medstar\"}]},"
+                    + "\"source\":\"https://example.com/platform\","
+                    + "\"security\":[{\"system\":\"https://example.com/access\",\"code\":\"medstar\"}]},"
                     + "\"status\":\"active\","
                     + "\"_access\":{\"medstar\":{\"$numberInt\":\"1\"}},"
                     + "\"_sourceAssigningAuthority\":\"medstar\","
                     + "\"_uuid\":\"ce4d849e-3eee-580c-9d79-d67b3cb8030f\","
-                    + "\"_sourceId\":\"bwell-J52EeTf\""
+                    + "\"_sourceId\":\"acct-J52EeTf\""
                     + "}";
 
             StructType securitySchema = new StructType(new StructField[]{
@@ -88,11 +88,11 @@ class BsonToRowConverterTest {
             assertThat(row).isNotNull();
             assertThat(row.getUTF8String(0)).isEqualTo(UTF8String.fromString("62b196c82283a3d22fddf32b"));
             assertThat(row.getUTF8String(1)).isEqualTo(UTF8String.fromString("Account"));
-            assertThat(row.getUTF8String(2)).isEqualTo(UTF8String.fromString("bwell-J52EeTf"));
+            assertThat(row.getUTF8String(2)).isEqualTo(UTF8String.fromString("acct-J52EeTf"));
             assertThat(row.getUTF8String(4)).isEqualTo(UTF8String.fromString("active"));
             assertThat(row.getUTF8String(6)).isEqualTo(UTF8String.fromString("medstar"));
             assertThat(row.getUTF8String(7)).isEqualTo(UTF8String.fromString("ce4d849e-3eee-580c-9d79-d67b3cb8030f"));
-            assertThat(row.getUTF8String(8)).isEqualTo(UTF8String.fromString("bwell-J52EeTf"));
+            assertThat(row.getUTF8String(8)).isEqualTo(UTF8String.fromString("acct-J52EeTf"));
 
             // Verify nested meta struct
             InternalRow metaRow = row.getStruct(3, 4);
@@ -100,13 +100,13 @@ class BsonToRowConverterTest {
             String lastUpdated = metaRow.getUTF8String(1).toString();
             assertThat(lastUpdated).contains("2024-07-20");
             assertThat(lastUpdated).endsWith("Z");
-            assertThat(metaRow.getUTF8String(2)).isEqualTo(UTF8String.fromString("https://www.icanbwell.com/platform"));
+            assertThat(metaRow.getUTF8String(2)).isEqualTo(UTF8String.fromString("https://example.com/platform"));
 
             // Verify security array
             ArrayData securityArray = metaRow.getArray(3);
             assertThat(securityArray.numElements()).isEqualTo(1);
             InternalRow securityRow = securityArray.getStruct(0, 2);
-            assertThat(securityRow.getUTF8String(0)).isEqualTo(UTF8String.fromString("https://www.icanbwell.com/access"));
+            assertThat(securityRow.getUTF8String(0)).isEqualTo(UTF8String.fromString("https://example.com/access"));
             assertThat(securityRow.getUTF8String(1)).isEqualTo(UTF8String.fromString("medstar"));
 
             // Verify _access map
@@ -650,7 +650,7 @@ class BsonToRowConverterTest {
 
         @Test
         void convertsAccessMapWithIntValues() {
-            String ejson = "{\"_access\":{\"medstar\":{\"$numberInt\":\"1\"},\"bwell\":{\"$numberInt\":\"2\"}}}";
+            String ejson = "{\"_access\":{\"org1\":{\"$numberInt\":\"1\"},\"org2\":{\"$numberInt\":\"2\"}}}";
             StructType schema = new StructType(new StructField[]{
                     new StructField("_access", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
             });
