@@ -123,7 +123,7 @@ df = spark.read.format("ejson").schema(schema).load("/path/to/federation/output/
 val df = spark.read
   .format("bson")
   .schema(schema)
-  .load("/Volumes/bronze/fhir_lake/atlas_data_federation/Patient_4_0_0/2026-01-15T10-30-00/")
+  .load("/path/to/bson/files/")
 ```
 
 ## Type Mapping
