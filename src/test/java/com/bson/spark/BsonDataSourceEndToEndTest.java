@@ -415,7 +415,7 @@ class BsonDataSourceEndToEndTest {
             List<Row> security0 = meta0.getList(3);
             assertThat(security0).hasSize(1);
             assertThat(security0.get(0).getString(0)).isEqualTo("https://example.com/access");
-            assertThat(security0.get(0).getString(1)).isEqualTo("medstar");
+            assertThat(security0.get(0).getString(1)).isEqualTo("org2");
 
             Row meta1 = rows.get(1).getStruct(0);
             List<Row> security1 = meta1.getList(3);
@@ -430,12 +430,12 @@ class BsonDataSourceEndToEndTest {
             List<Row> rows = loadFederationData().select("_access").collectAsList();
 
             Map<String, Integer> access0 = rows.get(0).getJavaMap(0);
-            assertThat(access0).containsEntry("medstar", 1);
+            assertThat(access0).containsEntry("org2", 1);
             assertThat(access0).hasSize(1);
 
             Map<String, Integer> access1 = rows.get(1).getJavaMap(0);
             assertThat(access1).containsEntry("org1", 1);
-            assertThat(access1).containsEntry("medstar", 1);
+            assertThat(access1).containsEntry("org2", 1);
             assertThat(access1).hasSize(2);
         }
 
@@ -451,7 +451,7 @@ class BsonDataSourceEndToEndTest {
             assertThat(results).hasSize(2);
             assertThat(results.get(0).getString(0)).isEqualTo("acct-J52EeTf");
             assertThat(results.get(0).getString(1)).isEqualTo("2");
-            assertThat(results.get(0).getString(2)).isEqualTo("medstar");
+            assertThat(results.get(0).getString(2)).isEqualTo("org2");
         }
 
         @Test

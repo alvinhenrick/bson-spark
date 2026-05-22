@@ -49,10 +49,10 @@ class BsonToRowConverterTest {
                     + "\"id\":\"acct-J52EeTf\","
                     + "\"meta\":{\"versionId\":\"2\",\"lastUpdated\":{\"$date\":{\"$numberLong\":\"1721469638000\"}},"
                     + "\"source\":\"https://example.com/platform\","
-                    + "\"security\":[{\"system\":\"https://example.com/access\",\"code\":\"medstar\"}]},"
+                    + "\"security\":[{\"system\":\"https://example.com/access\",\"code\":\"org2\"}]},"
                     + "\"status\":\"active\","
-                    + "\"_access\":{\"medstar\":{\"$numberInt\":\"1\"}},"
-                    + "\"_sourceAssigningAuthority\":\"medstar\","
+                    + "\"_access\":{\"org2\":{\"$numberInt\":\"1\"}},"
+                    + "\"_sourceAssigningAuthority\":\"org2\","
                     + "\"_uuid\":\"ce4d849e-3eee-580c-9d79-d67b3cb8030f\","
                     + "\"_sourceId\":\"acct-J52EeTf\""
                     + "}";
@@ -90,7 +90,7 @@ class BsonToRowConverterTest {
             assertThat(row.getUTF8String(1)).isEqualTo(UTF8String.fromString("Account"));
             assertThat(row.getUTF8String(2)).isEqualTo(UTF8String.fromString("acct-J52EeTf"));
             assertThat(row.getUTF8String(4)).isEqualTo(UTF8String.fromString("active"));
-            assertThat(row.getUTF8String(6)).isEqualTo(UTF8String.fromString("medstar"));
+            assertThat(row.getUTF8String(6)).isEqualTo(UTF8String.fromString("org2"));
             assertThat(row.getUTF8String(7)).isEqualTo(UTF8String.fromString("ce4d849e-3eee-580c-9d79-d67b3cb8030f"));
             assertThat(row.getUTF8String(8)).isEqualTo(UTF8String.fromString("acct-J52EeTf"));
 
@@ -107,7 +107,7 @@ class BsonToRowConverterTest {
             assertThat(securityArray.numElements()).isEqualTo(1);
             InternalRow securityRow = securityArray.getStruct(0, 2);
             assertThat(securityRow.getUTF8String(0)).isEqualTo(UTF8String.fromString("https://example.com/access"));
-            assertThat(securityRow.getUTF8String(1)).isEqualTo(UTF8String.fromString("medstar"));
+            assertThat(securityRow.getUTF8String(1)).isEqualTo(UTF8String.fromString("org2"));
 
             // Verify _access map
             assertThat(row.isNullAt(5)).isFalse();
@@ -145,7 +145,7 @@ class BsonToRowConverterTest {
                     + "\"_id\":{\"$oid\":\"62b196c82283a3d22fddf32b\"},"
                     + "\"subject\":[{"
                     + "\"reference\":\"Patient/000129538\","
-                    + "\"_sourceAssigningAuthority\":\"medstar\","
+                    + "\"_sourceAssigningAuthority\":\"org2\","
                     + "\"_uuid\":\"Patient/6917646a-941d-5a75-b229-202eae005a99\","
                     + "\"_sourceId\":\"Patient/000129538\""
                     + "}]"
@@ -171,7 +171,7 @@ class BsonToRowConverterTest {
             assertThat(subjects.numElements()).isEqualTo(1);
             InternalRow subject = subjects.getStruct(0, 4);
             assertThat(subject.getUTF8String(0)).isEqualTo(UTF8String.fromString("Patient/000129538"));
-            assertThat(subject.getUTF8String(1)).isEqualTo(UTF8String.fromString("medstar"));
+            assertThat(subject.getUTF8String(1)).isEqualTo(UTF8String.fromString("org2"));
             assertThat(subject.getUTF8String(2)).isEqualTo(UTF8String.fromString("Patient/6917646a-941d-5a75-b229-202eae005a99"));
             assertThat(subject.getUTF8String(3)).isEqualTo(UTF8String.fromString("Patient/000129538"));
         }
