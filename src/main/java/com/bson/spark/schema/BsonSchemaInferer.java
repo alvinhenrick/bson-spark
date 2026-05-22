@@ -106,11 +106,6 @@ public final class BsonSchemaInferer {
             case NULL:
             case UNDEFINED:
                 return DataTypes.NullType;
-            case REGULAR_EXPRESSION:
-            case JAVASCRIPT:
-            case SYMBOL:
-            case DB_POINTER:
-                return DataTypes.StringType;
             default:
                 return DataTypes.StringType;
         }
