@@ -383,14 +383,13 @@ class BsonDataSourceEndToEndTest {
                 new StructField("meta", metaSchema, true, Metadata.empty()),
                 new StructField("status", DataTypes.StringType, true, Metadata.empty()),
                 new StructField(
-                        "_access",
+                        "tags",
                         DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true),
                         true,
                         Metadata.empty()),
-                new StructField(
-                        "_sourceAssigningAuthority", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("_uuid", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("_sourceId", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("identifier", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("uuid", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("sourceRef", DataTypes.StringType, true, Metadata.empty()),
             });
 
             return spark.read()
@@ -428,7 +427,7 @@ class BsonDataSourceEndToEndTest {
 
         @Test
         void readsAccessMapField() {
-            List<Row> rows = loadFederationData().select("_access").collectAsList();
+            List<Row> rows = loadFederationData().select("tags").collectAsList();
 
             Map<String, Integer> access0 = rows.get(0).getJavaMap(0);
             assertThat(access0).containsEntry("org2", 1);
@@ -446,7 +445,7 @@ class BsonDataSourceEndToEndTest {
             df.createOrReplaceTempView("federation_data");
 
             List<Row> results = spark.sql(
-                            "SELECT id, meta.versionId, _sourceAssigningAuthority FROM federation_data")
+                            "SELECT id, meta.versionId, identifier FROM federation_data")
                     .collectAsList();
 
             assertThat(results).hasSize(2);

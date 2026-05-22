@@ -42,7 +42,7 @@ class BsonToRowConverterTest {
 
         @Test
         void convertsActualFederationDocument() {
-            // Actual line from /Volumes/bronze/fhir_lake/atlas_data_federation/Account_4_0_0/
+            // Sample EJSON document with nested structs, arrays, and maps
             String ejson = "{"
                     + "\"_id\":{\"$oid\":\"62b196c82283a3d22fddf32b\"},"
                     + "\"resourceType\":\"Account\","
@@ -51,10 +51,10 @@ class BsonToRowConverterTest {
                     + "\"source\":\"https://example.com/platform\","
                     + "\"security\":[{\"system\":\"https://example.com/access\",\"code\":\"org2\"}]},"
                     + "\"status\":\"active\","
-                    + "\"_access\":{\"org2\":{\"$numberInt\":\"1\"}},"
-                    + "\"_sourceAssigningAuthority\":\"org2\","
-                    + "\"_uuid\":\"ce4d849e-3eee-580c-9d79-d67b3cb8030f\","
-                    + "\"_sourceId\":\"acct-J52EeTf\""
+                    + "\"tags\":{\"org2\":{\"$numberInt\":\"1\"}},"
+                    + "\"identifier\":\"org2\","
+                    + "\"uuid\":\"ce4d849e-3eee-580c-9d79-d67b3cb8030f\","
+                    + "\"sourceRef\":\"acct-J52EeTf\""
                     + "}";
 
             StructType securitySchema = new StructType(new StructField[]{
@@ -75,10 +75,10 @@ class BsonToRowConverterTest {
                     new StructField("id", DataTypes.StringType, true, Metadata.empty()),
                     new StructField("meta", metaSchema, true, Metadata.empty()),
                     new StructField("status", DataTypes.StringType, true, Metadata.empty()),
-                    new StructField("_access", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
-                    new StructField("_sourceAssigningAuthority", DataTypes.StringType, true, Metadata.empty()),
-                    new StructField("_uuid", DataTypes.StringType, true, Metadata.empty()),
-                    new StructField("_sourceId", DataTypes.StringType, true, Metadata.empty()),
+                    new StructField("tags", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
+                    new StructField("identifier", DataTypes.StringType, true, Metadata.empty()),
+                    new StructField("uuid", DataTypes.StringType, true, Metadata.empty()),
+                    new StructField("sourceRef", DataTypes.StringType, true, Metadata.empty()),
             });
 
             BsonToRowConverter converter = new BsonToRowConverter(schema, defaultOptions());
@@ -109,7 +109,7 @@ class BsonToRowConverterTest {
             assertThat(securityRow.getUTF8String(0)).isEqualTo(UTF8String.fromString("https://example.com/access"));
             assertThat(securityRow.getUTF8String(1)).isEqualTo(UTF8String.fromString("org2"));
 
-            // Verify _access map
+            // Verify tags map
             assertThat(row.isNullAt(5)).isFalse();
         }
 
@@ -145,17 +145,17 @@ class BsonToRowConverterTest {
                     + "\"_id\":{\"$oid\":\"62b196c82283a3d22fddf32b\"},"
                     + "\"subject\":[{"
                     + "\"reference\":\"Patient/000129538\","
-                    + "\"_sourceAssigningAuthority\":\"org2\","
-                    + "\"_uuid\":\"Patient/6917646a-941d-5a75-b229-202eae005a99\","
-                    + "\"_sourceId\":\"Patient/000129538\""
+                    + "\"identifier\":\"org2\","
+                    + "\"uuid\":\"Patient/6917646a-941d-5a75-b229-202eae005a99\","
+                    + "\"sourceRef\":\"Patient/000129538\""
                     + "}]"
                     + "}";
 
             StructType subjectSchema = new StructType(new StructField[]{
                     new StructField("reference", DataTypes.StringType, true, Metadata.empty()),
-                    new StructField("_sourceAssigningAuthority", DataTypes.StringType, true, Metadata.empty()),
-                    new StructField("_uuid", DataTypes.StringType, true, Metadata.empty()),
-                    new StructField("_sourceId", DataTypes.StringType, true, Metadata.empty()),
+                    new StructField("identifier", DataTypes.StringType, true, Metadata.empty()),
+                    new StructField("uuid", DataTypes.StringType, true, Metadata.empty()),
+                    new StructField("sourceRef", DataTypes.StringType, true, Metadata.empty()),
             });
 
             StructType schema = new StructType(new StructField[]{
@@ -650,9 +650,9 @@ class BsonToRowConverterTest {
 
         @Test
         void convertsAccessMapWithIntValues() {
-            String ejson = "{\"_access\":{\"org1\":{\"$numberInt\":\"1\"},\"org2\":{\"$numberInt\":\"2\"}}}";
+            String ejson = "{\"tags\":{\"org1\":{\"$numberInt\":\"1\"},\"org2\":{\"$numberInt\":\"2\"}}}";
             StructType schema = new StructType(new StructField[]{
-                    new StructField("_access", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
+                    new StructField("tags", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
             });
 
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
@@ -666,9 +666,9 @@ class BsonToRowConverterTest {
 
         @Test
         void convertsEmptyMap() {
-            String ejson = "{\"_access\":{}}";
+            String ejson = "{\"tags\":{}}";
             StructType schema = new StructType(new StructField[]{
-                    new StructField("_access", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
+                    new StructField("tags", DataTypes.createMapType(DataTypes.StringType, DataTypes.IntegerType, true), true, Metadata.empty()),
             });
 
             InternalRow row = new BsonToRowConverter(schema, defaultOptions())
