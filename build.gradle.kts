@@ -115,7 +115,9 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             artifactId = "bson-spark_$scalaVersion"
-            from(components["java"])
+            artifact(tasks.shadowJar)
+            artifact(tasks.named("sourcesJar"))
+            artifact(tasks.named("javadocJar"))
 
             pom {
                 name.set("bson-spark")
@@ -166,4 +168,5 @@ signing {
     val signingPassword: String? by project
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
+    isRequired = signingKey != null
 }
